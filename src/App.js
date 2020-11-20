@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { FormControl, MenuItem, Select } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { FormControl, MenuItem, Select, Card } from '@material-ui/core';
 import './App.css';
-import './InfoBox.js'
+import './InfoBox.js';
 import InfoBox from './InfoBox.js';
+import Map from './Map';
 
 function App() {
   //hook for countries with a default value of empty array
@@ -41,37 +42,46 @@ function App() {
 
   return (
     <div className="app">
-      {/* Header */}
-      <div className="app__header">
-        <h1>COVID-19 TRACKER</h1>
+      <div className="app__left">
+        {/* Header */}
+        <div className="app__header">
+          <h1>COVID-19 TRACKER</h1>
 
-        {/* Title + Select input dropdown field */}
-        <FormControl className="app__dropdown">
-          <Select variant="outlined" value={country} onChange={onCountryChange}>
-            <MenuItem value="worldwide">Worldwide</MenuItem>
-            {/* Loop through all the countries and show a dropdown list of all the options */}
-            {
-              countries.map(country => (
-                <MenuItem value={country.value}>{country.name}</MenuItem>
-              ))
-            }
-          </Select>
-        </FormControl>
+          {/* Title + Select input dropdown field */}
+          <FormControl className="app__dropdown">
+            <Select variant="outlined" value={country} onChange={onCountryChange}>
+              <MenuItem value="worldwide">Worldwide</MenuItem>
+              {/* Loop through all the countries and show a dropdown list of all the options */}
+              {
+                countries.map(country => (
+                  <MenuItem value={country.value}>{country.name}</MenuItem>
+                ))
+              }
+            </Select>
+          </FormControl>
+        </div>
+
+        {/* Info Boxes */}
+        <div className="app__stats">
+          <InfoBox title="Coronavirus cases" cases={123} total={2000} />
+          <InfoBox title="Recovered" cases={143} total={2000} />
+          <InfoBox title="Deaths" cases={14378} total={2000} />
+        </div>
+
+        {/* Map */}
+        <Map>
+
+        </Map>
       </div>
 
-      {/* Info Boxes */}
-      <div className="app__stats">
-        <InfoBox title="Coronavirus cases" cases={123} total={2000} />
-        <InfoBox title="Recovered" cases={143} total={2000} />
-        <InfoBox title="Deaths" cases={14378} total={2000} />
-      </div>
+      <Card className="app__right">
+        {/* Table */}
+        <h3>Live Cases by Country</h3>
 
+        {/* Graph */}
+        <h3>Worldwide New Cases</h3>
 
-      {/* Table */}
-      {/* Graph */}
-
-      {/* Map */}
-
+      </Card>
     </div>
   );
 }
