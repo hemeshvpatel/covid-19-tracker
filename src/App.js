@@ -5,6 +5,7 @@ import './App.css';
 function App() {
   //hook for countries with a default value of empty array
   const [countries, setCountries] = useState([]);
+  const [country, setCountry] = useState('worldwide')
 
   //use disease.sh request to get list of countries
   //Request URL: https://disease.sh/v3/covid-19/countries
@@ -29,24 +30,26 @@ function App() {
   }, [])
   //^ you can put something in the [] if you want it to run again when something else updates
 
+  const onCountryChange = async (event) => {
+    const countryCode = event.target.value;
+    //console.log("current countryCode = ", countryCode)
+
+    setCountry(countryCode);
+  }
+
   return (
     <div className="app">
       <div className="app__header">
         <h1>COVID-19 TRACKER</h1>
         <FormControl className="app__dropdown">
-          <Select variant="outlined" value="abc">
+          <Select variant="outlined" value={country} onChange={onCountryChange}>
+            <MenuItem value="worldwide">Worldwide</MenuItem>
             {/* Loop through all the countries and show a dropdown list of all the options */}
-
             {
               countries.map(country => (
                 <MenuItem value={country.value}>{country.name}</MenuItem>
               ))
             }
-
-            {/* <MenuItem value="worldwide">Worldwide</MenuItem>
-            <MenuItem value="worldwide">Option 2</MenuItem>
-            <MenuItem value="worldwide">Option 3</MenuItem>
-            <MenuItem value="worldwide">Option 4</MenuItem> */}
           </Select>
         </FormControl>
 
