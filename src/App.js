@@ -4,11 +4,23 @@ import './App.css';
 import './InfoBox.js';
 import InfoBox from './InfoBox.js';
 import Map from './Map';
+import Table from './Table'
+import { sortData } from './util'
 
 function App() {
   //hook for countries with a default value of empty array
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState('worldwide')
+  const [countryInfo, setCountryInfo] = useState({});
+  const [tableData, setTableData] = useState([])
+
+  useEffect(() => {
+    fetch("https://disease.sh/v3/covid-19/all")
+      .then((response) => response.json())
+      .then((data) => {
+        setCountryInfo(data)
+      })
+  }, [])
 
   //use disease.sh request to get list of countries
   //Request URL: https://disease.sh/v3/covid-19/countries
@@ -20,12 +32,17 @@ function App() {
       await fetch("https://disease.sh/v3/covid-19/countries")
         .then((response) => response.json())
         .then((data) => {
+          //console.log("getCountriesData ---> ", data)
           const countries = data.map((country) => (
             {
+              key: country.countryInfo.iso3, //give unique id
               name: country.country, // United States, United Kingdom
               value: country.countryInfo.iso2 // UK, USA, FR etc.
             }
           ))
+
+          const sortedData = sortData(data)
+          setTableData(sortedData)
           setCountries(countries);
         })
     }
@@ -36,9 +53,19 @@ function App() {
   const onCountryChange = async (event) => {
     const countryCode = event.target.value;
     //console.log("current countryCode = ", countryCode)
-
     setCountry(countryCode);
-  }
+
+    const url = countryCode === "worldwide" ? "https://disease.sh/v3/covid-19/all" : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
+
+    await fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        setCountry(countryCode)
+        setCountryInfo(data)
+      });
+  };
+
+  console.log("COUNTRY INFO --> ", countryInfo)
 
   return (
     <div className="app">
@@ -53,9 +80,10 @@ function App() {
               <MenuItem value="worldwide">Worldwide</MenuItem>
               {/* Loop through all the countries and show a dropdown list of all the options */}
               {
-                countries.map(country => (
-                  <MenuItem value={country.value}>{country.name}</MenuItem>
-                ))
+                countries.map(country => {
+                  //console.log("country --> ", country);
+                  return <MenuItem key={country.key} value={country.value}>{country.name}</MenuItem>
+                })
               }
             </Select>
           </FormControl>
@@ -63,9 +91,9 @@ function App() {
 
         {/* Info Boxes */}
         <div className="app__stats">
-          <InfoBox title="Coronavirus cases" cases={123} total={2000} />
-          <InfoBox title="Recovered" cases={143} total={2000} />
-          <InfoBox title="Deaths" cases={14378} total={2000} />
+          <InfoBox title="Coronavirus cases" cases={countryInfo.todayCases} total={countryInfo.cases} />
+          <InfoBox title="Recovered" cases={countryInfo.todayRecovered} total={countryInfo.recovered} />
+          <InfoBox title="Deaths" cases={countryInfo.todayDeaths} total={countryInfo.deaths} />
         </div>
 
         {/* Map */}
@@ -77,6 +105,7 @@ function App() {
       <Card className="app__right">
         {/* Table */}
         <h3>Live Cases by Country</h3>
+        <Table countries={tableData}></Table>
 
         {/* Graph */}
         <h3>Worldwide New Cases</h3>

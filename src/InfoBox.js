@@ -12,7 +12,7 @@ function InfoBox({ title, cases, total }) {
                 </Typography>
 
                 {/* Number of cases */}
-                <h2 class="infoBox__cases">{cases}</h2>
+                <h2 className="infoBox__cases">{cases}</h2>
 
                 {/* Total */}
                 <Typography className="infoBox__total" color="textSecondary">
