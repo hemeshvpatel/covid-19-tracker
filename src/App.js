@@ -6,13 +6,20 @@ import InfoBox from './InfoBox.js';
 import Map from './Map';
 import Table from './Table'
 import { sortData } from './util'
+import LineGraph from "./LineGraph"
+import "leaflet/dist/leaflet.css"
 
 function App() {
   //hook for countries with a default value of empty array
-  const [countries, setCountries] = useState([]);
-  const [country, setCountry] = useState('worldwide')
+  const [country, setInputCountry] = useState("worldwide");
   const [countryInfo, setCountryInfo] = useState({});
-  const [tableData, setTableData] = useState([])
+  const [countries, setCountries] = useState([]);
+  const [mapCountries, setMapCountries] = useState([]);
+  const [tableData, setTableData] = useState([]);
+  const [casesType, setCasesType] = useState("cases");
+  const [mapCenter, setMapCenter] = useState({ lat: 34.80746, lng: -40.4796 });
+  const [mapZoom, setMapZoom] = useState(3);
+
 
   useEffect(() => {
     fetch("https://disease.sh/v3/covid-19/all")
@@ -42,8 +49,9 @@ function App() {
           ))
 
           const sortedData = sortData(data)
-          setTableData(sortedData)
+          setTableData(sortedData);
           setCountries(countries);
+          setMapCountries(data)
         })
     }
     getCountriesData();
@@ -53,19 +61,20 @@ function App() {
   const onCountryChange = async (event) => {
     const countryCode = event.target.value;
     //console.log("current countryCode = ", countryCode)
-    setCountry(countryCode);
 
     const url = countryCode === "worldwide" ? "https://disease.sh/v3/covid-19/all" : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
 
     await fetch(url)
       .then(response => response.json())
       .then(data => {
-        setCountry(countryCode)
+        setInputCountry(countryCode)
         setCountryInfo(data)
+        setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+        setMapZoom(4);
       });
   };
 
-  console.log("COUNTRY INFO --> ", countryInfo)
+  //console.log("COUNTRY INFO --> ", countryInfo)
 
   return (
     <div className="app">
@@ -97,9 +106,11 @@ function App() {
         </div>
 
         {/* Map */}
-        <Map>
-
-        </Map>
+        <Map
+          countries={mapCountries}
+          casesType={casesType}
+          center={mapCenter}
+          zoom={mapZoom} />
       </div>
 
       <Card className="app__right">
@@ -109,7 +120,7 @@ function App() {
 
         {/* Graph */}
         <h3>Worldwide New Cases</h3>
-
+        <LineGraph />
       </Card>
     </div>
   );

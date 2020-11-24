@@ -6,8 +6,8 @@ function Table({ countries }) {
         <div className="table">
             {countries.map(({ country, cases }) => (
                 <tr>
-                    <td>{country}</td>
-                    <td><strong>{cases}</strong></td>
+                    <td >{country}</td>
+                    <td ><strong>{cases}</strong></td>
                 </tr>
             ))}
         </div>
