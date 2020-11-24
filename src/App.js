@@ -105,6 +105,7 @@ const App = () => {
             </Select>
           </FormControl>
         </div>
+
         <div className="app__stats">
           <InfoBox
             onClick={(e) => setCasesType("cases")}
@@ -130,6 +131,7 @@ const App = () => {
             total={numeral(countryInfo.deaths).format("0.0a")}
           />
         </div>
+
         <Map
           countries={mapCountries}
           casesType={casesType}
@@ -137,13 +139,14 @@ const App = () => {
           zoom={mapZoom}
         />
       </div>
+
       <Card className="app__right">
         <CardContent>
           <div className="app__information">
             <h3>Live Cases by Country</h3>
             <Table countries={tableData} />
             <h3>Worldwide new {casesType}</h3>
-            <LineGraph className="app__graph" appcasesType={casesType} />
+            <LineGraph className="app__graph" casesType={casesType} />
           </div>
         </CardContent>
       </Card>
