@@ -3,6 +3,7 @@
   overflow: scroll;
   height: 400px;
   color: #6a5d5d;
+  background-color: white;
 }
 
 .table tr {
@@ -12,6 +13,7 @@
 
 .table td {
   padding: 0.5rem;
+  border: none;
 }
 
 .table tr:nth-of-type(odd) {
