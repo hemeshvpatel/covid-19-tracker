@@ -2,19 +2,19 @@ import React from 'react';
 import './Table.css';
 
 function Table({ countries }) {
-    console.log("Countries ---->", countries)
+    //console.log("Countries ---->", countries)
     return (
         <div className="table">
-            {countries.map(({ country, cases }) => (
-                <table key={country}>
-                    <tbody>
-                        <tr >
+            <table>
+                <tbody>
+                    {countries.map(({ country, cases }) => (
+                        <tr key={country}>
                             <td>{country}</td>
                             <td><strong>{cases}</strong></td>
                         </tr>
-                    </tbody>
-                </table>
-            ))}
+                    ))}
+                </tbody>
+            </table>
         </div>
     )
 }
