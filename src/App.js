@@ -32,6 +32,7 @@ const App = () => {
     fetch("https://disease.sh/v3/covid-19/all")
       .then((response) => response.json())
       .then((data) => {
+        //console.log("API data ----> ", data)
         setCountryInfo(data);
       });
   }, []);
@@ -71,7 +72,7 @@ const App = () => {
     const url =
       countryCode === "worldwide"
         ? "https://disease.sh/v3/covid-19/all"
-        : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
+        : `https://disease.sh/v3/covid-19/countries/${countryCode}?yesterday=true`;
     await fetch(url)
       .then((response) => response.json())
       .then((data) => {
@@ -85,7 +86,7 @@ const App = () => {
       });
   };
 
-  //console.log("COUNTRY INFO --> ", countryInfo)
+  console.log("COUNTRY INFO --> ", countryInfo)
 
   return (
     <div className="app">
