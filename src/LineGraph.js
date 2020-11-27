@@ -64,25 +64,52 @@ const buildChartData = (data, casesType = "cases") => {
     return chartData;
 }
 
-function LineGraph({ casesType, ...props }) {
+const buildChartDataCountry = (data, casesType = "cases") => {
+    const chartData = [];
+    let lastDataPoint;
+    console.log("buildChartDataCountry ", data)
+    for (let date in data.cases) {
+        if (lastDataPoint) {
+            const newDataPoint = {
+                x: date,
+                y: data[casesType][date] - lastDataPoint
+            }
+            chartData.push(newDataPoint)
+        }
+        lastDataPoint = data[casesType][date];
+    }
+    return chartData;
+}
+
+function LineGraph({ casesType = "cases", inputCountry = "worldwide", ...props }) {
     const [data, setData] = useState({})
+    console.log("LineGraph - Props = ", props)
+
+    let url =
+        inputCountry === "worldwide"
+            ? "https://disease.sh/v3/covid-19/historical/all?lastdays=120"
+            : `https://disease.sh/v3/covid-19/historical/${inputCountry}?lastdays=120`;
+
+    //console.log("url -------> ", url)
 
     useEffect(() => {
         const fetchData = async () => {
-            await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=30")
+            await fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     //console.log("LineGraph Data -->", data)
-
-                    let chartData = buildChartData(data);
+                    let chartData;
+                    inputCountry === "worldwide" ? chartData = buildChartData(data, casesType) : chartData = buildChartDataCountry(data.timeline, casesType);
                     setData(chartData)
+                    //console.log("chartData ---> ", chartData);
                 });
         }
         fetchData();
-    }, [])
+    }, [casesType, url])
 
     return (
         <div className={props.className}>
+
             {/* If data is defined then display line graph (due to fetch) */}
             {data?.length > 0 && (
                 <Line

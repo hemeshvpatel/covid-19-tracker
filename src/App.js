@@ -82,11 +82,12 @@ const App = () => {
         countryCode === "worldwide"
           ? setMapCenter([34.80746, -40.4796])
           : setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+
         countryCode === "worldwide" ? setMapZoom(3) : setMapZoom(4);
       });
   };
 
-  console.log("COUNTRY INFO --> ", countryInfo)
+  //console.log("COUNTRY INFO --> ", countryInfo)
 
   return (
     <div className="app">
@@ -146,8 +147,8 @@ const App = () => {
           <div className="app__information">
             <h3>Live Cases by Country</h3>
             <Table countries={tableData} />
-            <h3>Worldwide new {casesType}</h3>
-            <LineGraph className="app__graph" casesType={casesType} />
+            <h3>{countryInfo.country ? countryInfo.country : "Worldwide "} new {casesType}</h3>
+            <LineGraph className="app__graph" inputCountry={country} casesType={casesType} />
           </div>
         </CardContent>
       </Card>
