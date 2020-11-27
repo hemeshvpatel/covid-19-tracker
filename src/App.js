@@ -49,7 +49,7 @@ const App = () => {
           //console.log("getCountriesData ---> ", data)
           const countries = data.map((country) => (
             {
-              key: country.countryInfo.iso3, //give unique id
+              key: country.country, //give unique id
               name: country.country, // United States, United Kingdom
               value: country.countryInfo.iso2 // UK, USA, FR etc.
             }
@@ -100,7 +100,7 @@ const App = () => {
             >
               <MenuItem value="worldwide">Worldwide</MenuItem>
               {countries.map((country) => (
-                <MenuItem value={country.value}>{country.name}</MenuItem>
+                <MenuItem key={country.name} value={country.value}>{country.name}</MenuItem>
               ))}
             </Select>
           </FormControl>
