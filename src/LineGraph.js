@@ -70,7 +70,7 @@ const buildChartData = (data, casesType = "cases") => {
 const buildChartDataCountry = (data, casesType = "cases") => {
     const chartData = [];
     let lastDataPoint;
-    console.log("buildChartDataCountry ", data)
+    //console.log("buildChartDataCountry ", data)
     for (let date in data.cases) {
         if (lastDataPoint) {
             const newDataPoint = {
@@ -86,7 +86,7 @@ const buildChartDataCountry = (data, casesType = "cases") => {
 
 function LineGraph({ casesType = "cases", inputCountry = "worldwide", ...props }) {
     const [data, setData] = useState({})
-    console.log("LineGraph - Props = ", props)
+    //console.log("LineGraph - Props = ", props)
 
     let url =
         inputCountry === "worldwide"
