@@ -144,12 +144,12 @@ const App = () => {
 
       <Card className="app__right">
         <CardContent>
-          <div className="app__information">
-            <h3>Live Cases by Country</h3>
-            <Table countries={tableData} />
-            <h3>{countryInfo.country ? countryInfo.country : "Worldwide "} new {casesType}</h3>
-            <LineGraph className="app__graph" inputCountry={country} casesType={casesType} />
-          </div>
+          {/* <div className="app__information"> */}
+          <h3 className="app__information">Live Cases by Country</h3>
+          <Table countries={tableData} />
+          <h3 className="app__information2">{countryInfo.country ? countryInfo.country : "Worldwide "} new {casesType}</h3>
+          <LineGraph className="app__graph" inputCountry={country} casesType={casesType} />
+          {/* </div> */}
         </CardContent>
       </Card>
     </div>

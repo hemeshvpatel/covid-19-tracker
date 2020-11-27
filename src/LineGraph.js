@@ -8,8 +8,12 @@ const options = {
     },
     elements: {
         point: {
-            radius: 0,
+            radius: 1,
         },
+        line: {
+            borderColor: `#cc1034`,
+            borderWidth: 1
+        }
     },
     maintainAspectRatio: false,
     tooltips: {
@@ -37,7 +41,6 @@ const options = {
                     display: false,
                 },
                 ticks: {
-                    // Include a dollar sign in the ticks
                     callback: function (value, index, values) {
                         return numeral(value).format("0a");
                     },
@@ -105,7 +108,7 @@ function LineGraph({ casesType = "cases", inputCountry = "worldwide", ...props }
                 });
         }
         fetchData();
-    }, [casesType, url])
+    }, [casesType, inputCountry, url])
 
     return (
         <div className={props.className}>
