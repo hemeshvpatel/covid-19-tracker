@@ -1,3 +1,5 @@
+Hosted: https://covid-19-tracker-55325.web.app/
+
 Covid-19 Tracker that utilizes disease.sh API
 
 Built with Javascript, React, and Firebase
